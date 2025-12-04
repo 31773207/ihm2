@@ -3,11 +3,14 @@ package view.frames;
 
 import controller.BookController;
 import controller.NavigationController;
+import service.SearchController;
 import controller.CartController;
 import java.awt.*; // for colors .BorderLayout
 import javax.swing.*;
 import view.components.NavigationBar;
 import view.panels.*;
+
+
 
 public class MainFrame extends JFrame {
     private JPanel mainPanel;
@@ -30,6 +33,7 @@ public class MainFrame extends JFrame {
         setLocationRelativeTo(null);
         setLayout(new BorderLayout());
 
+      
         // ========================== Navigation Bar =======================
         navBar = new NavigationBar();
         add(navBar, BorderLayout.NORTH);

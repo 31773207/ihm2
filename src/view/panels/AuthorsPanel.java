@@ -10,10 +10,9 @@ import view.components.AuthorCard;
 public class AuthorsPanel extends JPanel {
 
     public AuthorsPanel() {
-        setOpaque(true);
-        setBackground(Color.WHITE);
+        setOpaque(false);
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-        setPreferredSize(new Dimension(900, 850));
+        setPreferredSize(new Dimension(1100, 750));
 
         // ===== TITLE =====
         JLabel mainTitle = new JLabel("Featured Authors", SwingConstants.CENTER);
@@ -31,10 +30,10 @@ public class AuthorsPanel extends JPanel {
         subtitle.setBorder(BorderFactory.createEmptyBorder(0, 0, 50, 0));
         add(subtitle);
 
-        // ===== AUTHORS GRID (2x2 layout) =====
-        JPanel authorsGrid = new JPanel(new GridLayout(2, 2, 30, 30));
+        // ===== AUTHORS GRID (1x4 layout) =====
+        JPanel authorsGrid = new JPanel(new GridLayout(1, 4, 25, 25));
         authorsGrid.setOpaque(false);
-        authorsGrid.setMaximumSize(new Dimension(850, 550));
+        authorsGrid.setMaximumSize(new Dimension(1000, 280));
         
         // Get all authors
         List<Author> authors = AuthorStore.getAllAuthors();
@@ -56,12 +55,10 @@ public class AuthorsPanel extends JPanel {
         // Center the grid
         JPanel gridWrapper = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 0));
         gridWrapper.setOpaque(false);
+        gridWrapper.setBorder(BorderFactory.createEmptyBorder(20, 40, 40, 40));
         gridWrapper.add(authorsGrid);
         gridWrapper.setAlignmentX(CENTER_ALIGNMENT);
         add(gridWrapper);
-        
-        // Add vertical space
-        add(Box.createVerticalStrut(50));
 
         // ===== VIEW ALL AUTHORS BUTTON =====
         JPanel buttonPanel = new JPanel();
@@ -95,5 +92,21 @@ public class AuthorsPanel extends JPanel {
         buttonPanel.add(viewAllButton);
         buttonPanel.setAlignmentX(CENTER_ALIGNMENT);
         add(buttonPanel);
+    }
+
+    @Override
+    protected void paintComponent(Graphics g) {
+        Graphics2D g2 = (Graphics2D) g.create();
+        g2.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+
+        int w = getWidth();
+        int h = getHeight();
+
+        // soft vertical gradient background
+        GradientPaint gp = new GradientPaint(0, 0, new Color(250, 240, 245), 0, h, new Color(235, 235, 255));
+        g2.setPaint(gp);
+        g2.fillRect(0, 0, w, h);
+
+        g2.dispose();
     }
 }

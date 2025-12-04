@@ -89,7 +89,7 @@ public class HomePanel extends JPanel {
         rightPanel.setOpaque(false);
 
         // Load image (ensure path exists)
-        ImageIcon icon = new ImageIcon("C:/Users/work/Desktop/project/resources/icons/book2.jpg");
+        ImageIcon icon = new ImageIcon("resources/icons/book2.jpg");
         Image img = icon.getImage();
         // scale to fit comfortably (adjust sizes if needed)
         Image newImg = img.getScaledInstance(750, 700, Image.SCALE_SMOOTH);

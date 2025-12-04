@@ -10,9 +10,9 @@ import view.components.GenreCard;
 public class GenrePanel extends JPanel {
 
     public GenrePanel() {
-        setPreferredSize(new Dimension(1000, 600)); // Increased size for 6 cards
-        setBackground(new Color(245, 205, 175));
+        setPreferredSize(new Dimension(1100, 700));
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+        setOpaque(false);
 
         // ===== TITLE =====
         JLabel mainTitle = new JLabel("Popular Genres", SwingConstants.CENTER);
@@ -34,9 +34,9 @@ public class GenrePanel extends JPanel {
         add(subtitle);
 
         // ===== GRID OF 6 CARDS (2 rows x 3 columns) =====
-        JPanel gridPanel = new JPanel(new GridLayout(2, 3, 25, 25)); // 2 rows, 3 columns
-        gridPanel.setBackground(new Color(245, 205, 175));
-        gridPanel.setBorder(BorderFactory.createEmptyBorder(0, 50, 40, 50));
+        JPanel gridPanel = new JPanel(new GridLayout(2, 3, 30, 30)); // 2 rows, 3 columns
+        gridPanel.setOpaque(false);
+        gridPanel.setBorder(BorderFactory.createEmptyBorder(20, 60, 60, 60));
 
         List<Genre> genres = GenreStore.getAllGenres();
         
@@ -59,5 +59,22 @@ public class GenrePanel extends JPanel {
         // If GenreStore doesn't have these, you might need to add them or create cards manually
 
         add(gridPanel);
+    }
+
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        Graphics2D g2 = (Graphics2D) g.create();
+        g2.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+
+        int w = getWidth();
+        int h = getHeight();
+
+        // soft vertical gradient background
+        GradientPaint gp = new GradientPaint(0, 0, new Color(250, 240, 245), 0, h, new Color(235, 235, 255));
+        g2.setPaint(gp);
+        g2.fillRect(0, 0, w, h);
+
+        g2.dispose();
     }
 }

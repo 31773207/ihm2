@@ -406,9 +406,39 @@ public class BookCard extends JPanel {
                 + "IMAGE<br/>NOT FOUND</div></html>");
         }
         
-        bookImage.setPreferredSize(new Dimension(360, 360));
-        bookImage.setMaximumSize(new Dimension(360, 360));
-        bookImage.setMinimumSize(new Dimension(360, 360));
+        bookImage.setPreferredSize(new Dimension(260, 320));
+        bookImage.setMaximumSize(new Dimension(260, 320));
+        bookImage.setMinimumSize(new Dimension(260, 320));
+
+        // ======================== WISHLIST HEART OVERLAY ===================================
+        JLayeredPane imageLayer = new JLayeredPane();
+        imageLayer.setPreferredSize(new Dimension(280, 340));
+        imageLayer.setMaximumSize(new Dimension(280, 340));
+        imageLayer.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        // Place the image at (10,10) inside the layered pane
+        bookImage.setBounds(10, 10, 260, 320);
+        imageLayer.add(bookImage, JLayeredPane.DEFAULT_LAYER);
+
+        // Add wishlist heart button overlay at top-right
+        JButton wishlistBtn = new JButton("\u2661");
+        wishlistBtn.setFont(new Font("Arial", Font.PLAIN, 24));
+        wishlistBtn.setForeground(new Color(200, 200, 200));
+        wishlistBtn.setContentAreaFilled(false);
+        wishlistBtn.setBorderPainted(false);
+        wishlistBtn.setFocusPainted(false);
+        wishlistBtn.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        wishlistBtn.setBounds(240, 10, 40, 40);
+        
+        wishlistBtn.addActionListener(e -> {
+            if (wishlistBtn.getForeground().equals(new Color(200, 200, 200))) {
+                wishlistBtn.setForeground(new Color(220, 0, 0)); // Red heart when added
+            } else {
+                wishlistBtn.setForeground(new Color(200, 200, 200)); // Gray when removed
+            }
+        });
+        
+        imageLayer.add(wishlistBtn, JLayeredPane.PALETTE_LAYER);
 
         // ======================== TITLE ===================================
         String cleanTitle = book.getTitle().replaceAll("<[^>]*>", "");
@@ -504,7 +534,7 @@ public class BookCard extends JPanel {
 });
 
         // ============================ Add all components ===================
-        add(bookImage);
+        add(imageLayer);  // Use layered pane with image + wishlist button
         add(bookTitle);
         add(author);
         add(description);
@@ -540,6 +570,14 @@ Color colorBottom = new Color(249, 211, 153); // F9D399
     
     g2.dispose();
 
+    }
+
+    /**
+     * Set a click listener for the bookmark/free button
+     */
+    public void setFreeClickListener(java.awt.event.ActionListener listener) {
+        // This method is a placeholder for future bookmark functionality
+        // Current implementation doesn't have a separate free button
     }
 
     private void showAddToCartToast(Window owner, String message) {

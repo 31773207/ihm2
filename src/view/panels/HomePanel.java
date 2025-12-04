@@ -1,0 +1,154 @@
+package view.panels;
+
+import java.awt.*;
+import javax.swing.*;
+import view.frames.MainFrame;
+
+public class HomePanel extends JPanel {
+
+    public HomePanel(MainFrame mainFrame) {
+        setPreferredSize(new Dimension(800, 750));
+        // keep panel background, but gradient is painted in paintComponent
+        setLayout(new GridLayout(1, 2)); // 2 columns : left / right
+
+        // ===== Left Panel =====
+        JPanel leftPanel = new JPanel();
+        // make it non-opaque so the gradient from HomePanel shows through
+        leftPanel.setOpaque(false);
+        // you can keep the visual "background color" for components inside
+        leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.Y_AXIS));
+        leftPanel.setBorder(BorderFactory.createEmptyBorder(120, 50, 50, 40));
+
+        // Title
+        JLabel title = new JLabel("<html>Discover Literary <br> Treasures</html>");
+        title.setFont(new Font("SansSerif", Font.BOLD, 50));
+        title.setForeground(new Color(110, 60, 16));
+        title.setAlignmentX(Component.LEFT_ALIGNMENT);
+        title.setOpaque(false);
+
+        // Description
+        JLabel desc = new JLabel("<html>Immerse yourself in a curated collection of timeless classics and contemporary masterpieces. "
+                + "Every book opens a door to new worlds of knowledge and imagination. "
+                + "Join thousands of readers who have found their literary sanctuary with us.</html>");
+        desc.setFont(new Font("SansSerif", Font.PLAIN, 20));
+        desc.setForeground(new Color(110, 60, 16));
+        desc.setAlignmentX(Component.LEFT_ALIGNMENT);
+        desc.setOpaque(false);
+
+        // Buttons
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 20, 10));
+        buttonPanel.setOpaque(false);
+
+        JButton startReading = new JButton("Start Reading");
+        startReading.setFont(new Font("SansSerif", Font.BOLD, 20));
+        startReading.setBackground(new Color(110, 60, 16));
+        startReading.setForeground(Color.WHITE);
+        startReading.setFocusPainted(false);
+        startReading.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
+
+        // Button action
+        startReading.addActionListener(e -> {
+            mainFrame.scrollToPanel(mainFrame.getCatalogPanel());
+        });
+
+        JButton freeClassics = new JButton("Free Classics");
+        freeClassics.setFont(new Font("SansSerif", Font.BOLD, 20));
+        freeClassics.setBackground(new Color(198, 175, 158));
+        freeClassics.setForeground(new Color(110, 60, 16));
+        freeClassics.setFocusPainted(false);
+        freeClassics.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(new Color(198, 175, 158), 1),
+                BorderFactory.createEmptyBorder(8, 18, 8, 18)
+        ));
+
+        buttonPanel.add(startReading);
+        buttonPanel.add(freeClassics);
+        buttonPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
+
+        // Stats panel
+        JPanel statsPanel = new JPanel(new GridLayout(1, 3, 10, 15));
+        statsPanel.setOpaque(false);
+        statsPanel.add(createStat("📚 10,000+", "Books Available"));
+        statsPanel.add(createStat("😊 25,000+", "Happy Readers"));
+        statsPanel.add(createStat("📖 50+", "Genres"));
+        statsPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
+
+        // Add components to left panel
+        leftPanel.add(title);
+        leftPanel.add(Box.createVerticalStrut(10));
+        leftPanel.add(desc);
+        leftPanel.add(Box.createVerticalStrut(20));
+        leftPanel.add(Box.createVerticalGlue());
+        leftPanel.add(buttonPanel);
+        leftPanel.add(Box.createVerticalStrut(20));
+        leftPanel.add(statsPanel);
+
+        // ===== Right Panel (Image) =====
+        JPanel rightPanel = new JPanel(new BorderLayout());
+        // make rightPanel transparent so gradient shows
+        rightPanel.setOpaque(false);
+
+        // Load image (ensure path exists)
+        ImageIcon icon = new ImageIcon("C:/Users/work/Desktop/project/resources/icons/book2.jpg");
+        Image img = icon.getImage();
+        // scale to fit comfortably (adjust sizes if needed)
+        Image newImg = img.getScaledInstance(750, 700, Image.SCALE_SMOOTH);
+        ImageIcon resizedIcon = new ImageIcon(newImg);
+
+        JLabel label = new JLabel(resizedIcon);
+        label.setHorizontalAlignment(SwingConstants.CENTER);
+        label.setVerticalAlignment(SwingConstants.CENTER);
+        // ensure label is non-opaque (so it doesn't paint its own background)
+        label.setOpaque(false);
+
+        rightPanel.add(label, BorderLayout.CENTER);
+
+        // Add panels to main layout (HomePanel)
+        add(leftPanel);
+        add(rightPanel);
+    }
+
+    // ===== Stat Panel Generator =====
+    private JPanel createStat(String value, String label) {
+        JPanel p = new JPanel();
+        p.setLayout(new BoxLayout(p, BoxLayout.Y_AXIS));
+        p.setOpaque(false);
+
+        JLabel v = new JLabel(value);
+        v.setFont(new Font("SansSerif", Font.BOLD, 35));
+        v.setForeground(new Color(110, 60, 16));
+        v.setAlignmentX(Component.CENTER_ALIGNMENT);
+        v.setOpaque(false);
+
+        JLabel l = new JLabel(label);
+        l.setFont(new Font("SansSerif", Font.PLAIN, 20));
+        l.setForeground(new Color(110, 60, 16));
+        l.setAlignmentX(Component.CENTER_ALIGNMENT);
+        l.setOpaque(false);
+
+        p.add(v);
+        p.add(Box.createVerticalStrut(5));
+        p.add(l);
+
+        return p;
+    }
+
+    // ===== Background Gradient =====
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        Graphics2D g2 = (Graphics2D) g.create();
+        int w = getWidth();
+        int h = getHeight();
+
+        // EXACTLY YOUR 2 COLORS:
+        Color c1 = new Color(255, 230, 230); // Light pink
+        Color c2 = new Color(240, 240, 255); // Light blue
+        GradientPaint gp = new GradientPaint(0, 0, c1, 0, h, c2);
+
+        g2.setPaint(gp);
+        g2.fillRect(0, 0, w, h);
+
+        g2.dispose();
+    }
+}

@@ -82,28 +82,71 @@ public class HomePanel extends JPanel {
         leftPanel.add(Box.createVerticalStrut(20));
         leftPanel.add(statsPanel);
 
-        // ===== Right Panel (Image) =====
-        JPanel rightPanel = new JPanel(new BorderLayout());
-        // make rightPanel transparent so gradient shows
-        rightPanel.setOpaque(false);
+// ===== Right Panel (Image) =====
+JPanel rightPanel = new JPanel(new BorderLayout());
+rightPanel.setOpaque(false);
 
-        // Load image (ensure path exists)
-        ImageIcon icon = new ImageIcon("resources/icons/book2.jpg");
-        Image img = icon.getImage();
-        // scale to fit comfortably (adjust sizes if needed)
-        Image newImg = img.getScaledInstance(750, 700, Image.SCALE_SMOOTH);
-        ImageIcon resizedIcon = new ImageIcon(newImg);
+// Load image
+ImageIcon icon = new ImageIcon("resources/icons/book2.jpg");
+Image img = icon.getImage();
+Image newImg = img.getScaledInstance(500, 500, Image.SCALE_SMOOTH); // Small size
+final ImageIcon resizedIcon = new ImageIcon(newImg);
 
-        JLabel label = new JLabel(resizedIcon);
-        label.setHorizontalAlignment(SwingConstants.CENTER);
-        label.setVerticalAlignment(SwingConstants.CENTER);
-        // ensure label is non-opaque (so it doesn't paint its own background)
-        label.setOpaque(false);
+// Create image panel with rounded corners
+JPanel imageContainer = new JPanel() {
+    @Override
+    protected void paintComponent(Graphics g) {
+        Graphics2D g2 = (Graphics2D) g.create();
+        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        
+        int width = getWidth();
+        int height = getHeight();
+        int arc = 25;
+        
+        g2.setClip(new java.awt.geom.RoundRectangle2D.Double(0, 0, width, height, arc, arc));
+        if (resizedIcon != null) {
+            g2.drawImage(resizedIcon.getImage(), 0, 0, width, height, this);
+        }
+        
+        g2.dispose();
+    }
+    
+    @Override
+    public void paintBorder(Graphics g) {
+        Graphics2D g2 = (Graphics2D) g.create();
+        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        
+        int width = getWidth();
+        int height = getHeight();
+        int arc = 25;
+        
+        g2.setColor(new Color(253, 229, 193));
+        g2.setStroke(new BasicStroke(2));
+        g2.drawRoundRect(1, 1, width - 3, height - 3, arc, arc);
+        
+        g2.dispose();
+    }
+};
 
-        //rightPanel.add(label, BorderLayout.CENTER);
+imageContainer.setPreferredSize(new Dimension(500, 500));
+imageContainer.setOpaque(false);
 
-                rightPanel.add(label, BorderLayout.CENTER);
+// Create wrapper panel to center the image
+// Create wrapper panel to center the image vertically and horizontally
+// Create wrapper panel to center the image
 
+
+// Create wrapper panel to center the image
+JPanel wrapper = new JPanel();
+wrapper.setLayout(new BoxLayout(wrapper, BoxLayout.Y_AXIS)); // Vertical layout
+wrapper.setOpaque(false);
+wrapper.add(Box.createVerticalGlue()); // Push down
+wrapper.add(imageContainer);
+wrapper.add(Box.createVerticalGlue()); // Push up
+
+rightPanel.add(wrapper, BorderLayout.CENTER);
+
+rightPanel.add(wrapper, BorderLayout.CENTER);
         // Add panels to main layout (HomePanel)
         add(leftPanel);
         add(rightPanel);

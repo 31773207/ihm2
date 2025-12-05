@@ -5,6 +5,8 @@ import java.awt.*;
 import javax.swing.*;
 import view.components.NavigationBar;
 import view.frames.MainFrame;
+import view.dialogs.AccountDialog;
+import service.UserService;
 
 public class NavigationController {
 
@@ -26,10 +28,20 @@ public class NavigationController {
         navBar.getCatalogueButton().addActionListener(e -> frame.scrollToPanel(frame.getCatalogPanel()));
         navBar.getGenreButton().addActionListener(e -> frame.scrollToPanel(frame.getGenresPanel()));
         navBar.getAuthorsButton().addActionListener(e -> frame.scrollToPanel(frame.getAuthorsPanel()));
-        // Show login popup when login button is clicked
-        navBar.getLoginButton().addActionListener(e -> showLoginPopup());
+        // Show login/account popup when login button is clicked
+        navBar.getLoginButton().addActionListener(e -> handleLoginAccountButtonClick());
             // Show cart popup when cart button is clicked
             navBar.getCartButton().addActionListener(e -> toggleCartPopup());
+    }
+
+    private void handleLoginAccountButtonClick() {
+        if (UserService.getInstance().isLoggedIn()) {
+            // User is logged in - show account dialog
+            showAccountPopup();
+        } else {
+            // User is not logged in - show login dialog
+            showLoginPopup();
+        }
     }
 
     private void toggleCartPopup() {
@@ -94,16 +106,21 @@ public class NavigationController {
         cartDialog.pack();
     }
 
-    private void showLoginPopup() {
-        // Theme colors
-        Color accent = new Color(110, 60, 16);
-        Color btnBg = new Color(198, 175, 158);
+    private void showAccountPopup() {
+        AccountDialog accountDialog = new AccountDialog(frame);
+        accountDialog.setVisible(true);
+    }
 
+    private void showLoginPopup() {
         JDialog dialog = new JDialog(frame, "Login", true);
         dialog.setSize(520, 520);
         dialog.setUndecorated(true);
         dialog.setLayout(new GridBagLayout());
-        dialog.getContentPane().setBackground(new Color(0,0,0,0));
+        dialog.getContentPane().setBackground(new Color(0, 0, 0, 0));
+
+        // Theme colors
+        Color accent = new Color(110, 60, 16);
+        Color btnBg = new Color(198, 175, 158);
 
         // Rounded card panel
         JPanel card = new JPanel() {
@@ -112,7 +129,7 @@ public class NavigationController {
                 Graphics2D g2 = (Graphics2D) g.create();
                 g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
                 g2.setColor(Color.WHITE);
-                g2.fillRoundRect(0, 0, getWidth(), getHeight(), 24, 24);
+                g2.fillRoundRect(0, 0, getWidth(), getHeight(), 28, 28);
                 g2.dispose();
                 super.paintComponent(g);
             }
@@ -145,12 +162,12 @@ public class NavigationController {
 
         JTextField emailField = new JTextField();
         emailField.setMaximumSize(new Dimension(Integer.MAX_VALUE, 40));
-        styleInput(emailField, new Color(245,245,245), accent);
+        styleInput(emailField, new Color(245, 245, 245), accent);
         emailField.setToolTipText("Email");
 
         JPasswordField passField = new JPasswordField();
         passField.setMaximumSize(new Dimension(Integer.MAX_VALUE, 40));
-        styleInput(passField, new Color(245,245,245), accent);
+        styleInput(passField, new Color(245, 245, 245), accent);
         passField.setToolTipText("Password");
 
         JLabel forgot = new JLabel("Forgot password?", SwingConstants.RIGHT);
@@ -172,7 +189,7 @@ public class NavigationController {
         form.add(Box.createVerticalStrut(16));
 
         // Buttons
-        JPanel actions = new JPanel(new FlowLayout(FlowLayout.RIGHT, 10, 0));
+        JPanel actions = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 0));
         actions.setOpaque(false);
 
         JButton close = new JButton("Close");
@@ -199,6 +216,8 @@ public class NavigationController {
         footer.setOpaque(false);
         JLabel signup = new JLabel("Don't have an account? Create one", SwingConstants.CENTER);
         signup.setForeground(accent);
+        signup.setFont(new Font("Arial", Font.PLAIN, 12));
+        signup.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         signup.setBorder(BorderFactory.createEmptyBorder(8, 12, 16, 12));
         footer.add(signup, BorderLayout.CENTER);
         card.add(footer, BorderLayout.SOUTH);
@@ -214,6 +233,16 @@ public class NavigationController {
                 JOptionPane.showMessageDialog(dialog, "Please enter email and password.", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
+            
+            // Extract name from email (part before @)
+            String name = email.split("@")[0];
+            
+            // Login the user
+            UserService.getInstance().login(email, name);
+            
+            // Update navigation bar button
+            navBar.updateLoginButton(true);
+            
             JOptionPane.showMessageDialog(dialog, "Signed in successfully.", "Success", JOptionPane.INFORMATION_MESSAGE);
             dialog.dispose();
         });
@@ -224,16 +253,12 @@ public class NavigationController {
 
     // Helper to style text inputs consistently
     private void styleInput(JComponent comp, Color bg, Color accent) {
-        comp.setOpaque(true);
         comp.setBackground(bg);
+        comp.setForeground(accent);
         comp.setFont(new Font("Arial", Font.PLAIN, 14));
         comp.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createLineBorder(new Color(220,220,220)),
-                BorderFactory.createEmptyBorder(8, 8, 8, 8)));
-        if (comp instanceof JTextField) {
-            ((JTextField) comp).setCaretColor(accent);
-        } else if (comp instanceof JPasswordField) {
-            ((JPasswordField) comp).setCaretColor(accent);
-        }
+                BorderFactory.createLineBorder(new Color(200, 180, 160), 1),
+                BorderFactory.createEmptyBorder(8, 12, 8, 12)
+        ));
     }
 }

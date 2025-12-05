@@ -224,6 +224,15 @@ loginBtn.setMaximumSize(new Dimension(100, 35));
     public JButton getFeaturedButton() { return featuredBtn; }
     public JButton getCartButton() { return cartBtn; }
     public JButton getLoginButton() { return loginBtn; }
+    
+    public void updateLoginButton(boolean isLoggedIn) {
+        if (isLoggedIn) {
+            loginBtn.setText("Account");
+        } else {
+            loginBtn.setText("Login");
+        }
+    }
+    
     public void updateFavoriteCount(int count) { /* no-op: favorites removed */ }
     public void updateCartCount(int count) {
         cartBtn.setText("🛒 " + count);

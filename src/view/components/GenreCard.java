@@ -74,7 +74,48 @@ public class GenreCard extends JPanel {
     }
 
     private Icon createGenreIcon(String genreName, int w, int h) {
-        // simple colored rounded square with an emoji-like letter fallback
+        // Try to load genre-specific book image
+        String imageName = getImagePathForGenre(genreName);
+        try {
+            // Try different possible paths
+            String[] possiblePaths = {
+                "src/images/" + imageName,
+                "images/" + imageName,
+                "/images/" + imageName
+            };
+            
+            java.io.File imageFile = null;
+            for (String path : possiblePaths) {
+                java.io.File file = new java.io.File(path);
+                if (file.exists()) {
+                    imageFile = file;
+                    break;
+                }
+            }
+            
+            // Also try as resource
+            if (imageFile == null) {
+                java.net.URL imageUrl = getClass().getResource("/images/" + imageName);
+                if (imageUrl != null) {
+                    ImageIcon icon = new ImageIcon(imageUrl);
+                    Image scaledImage = icon.getImage().getScaledInstance(w, h, Image.SCALE_SMOOTH);
+                    return new ImageIcon(scaledImage);
+                }
+            }
+            
+            // If file found, load it
+            if (imageFile != null && imageFile.exists()) {
+                ImageIcon icon = new ImageIcon(imageFile.getAbsolutePath());
+                Image scaledImage = icon.getImage().getScaledInstance(w, h, Image.SCALE_SMOOTH);
+                return new ImageIcon(scaledImage);
+            }
+            
+        } catch (Exception e) {
+            System.err.println("Failed to load image for genre: " + genreName);
+            e.printStackTrace();
+        }
+        
+        // Fallback: create a colored placeholder if image not found
         BufferedImage img = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
         Graphics2D g2 = img.createGraphics();
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
@@ -91,6 +132,20 @@ public class GenreCard extends JPanel {
 
         g2.dispose();
         return new ImageIcon(img);
+    }
+    
+    private String getImagePathForGenre(String genreName) {
+        if (genreName == null) return "1.jpg";
+        
+        switch(genreName) {
+            case "Fantasy": return "5.jpg";
+case "Romance": return "3.jpg";
+case "Horror": return "book12.jpg"; // Horror
+case "Sci-Fi": return "2.jpg";
+case "Mystery": return "1.jpg";
+
+            default: return "3.jpg";
+        }
     }
 
     @Override

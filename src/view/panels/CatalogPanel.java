@@ -105,13 +105,13 @@ public class CatalogPanel extends JPanel {
         
         // ===================== HEADER =====================
         JLabel title = new JLabel("Complete Catalogue");
-        title.setFont(new Font("Arial", Font.BOLD, 36));
-        title.setForeground(new Color(110, 60, 16)); // Dark brown text
+        title.setFont(new Font("Arial", Font.BOLD, 40));
+        title.setForeground(new Color(152, 77, 35)); // Dark brown text
         title.setAlignmentX(Component.CENTER_ALIGNMENT);
         
         JLabel subtitle = new JLabel("Explore our complete collection of over 10,000 carefully selected books");
         subtitle.setFont(new Font("Arial", Font.PLAIN, 16));
-        subtitle.setForeground(new Color(110, 60, 16)); // Dark brown text
+        subtitle.setForeground(new Color(152, 77, 35)); // Dark brown text
         subtitle.setAlignmentX(Component.CENTER_ALIGNMENT);
         
         // ===================== FILTER BAR =====================
@@ -121,31 +121,41 @@ public class CatalogPanel extends JPanel {
         
         // All Genres (styled as label + dropdown)
         JLabel allGenresLabel = new JLabel("All Genres");
-        allGenresLabel.setFont(new Font("Arial", Font.PLAIN, 20));
-        allGenresLabel.setForeground(new Color(110, 60, 16)); // Dark brown text
+        allGenresLabel.setFont(new Font("Arial", Font.BOLD, 20));
+        allGenresLabel.setForeground(new Color(152, 77, 35)); // Dark brown text
         
-        genreBox = new JComboBox<>(new String[]{"All", "Fantasy", "Romance", "Sci-Fi", "Mystery", "Horror", "Drama"});
-        genreBox.setFont(new Font("Arial", Font.PLAIN, 20));
-        genreBox.setPreferredSize(new Dimension(120, 40));
+           genreBox = new JComboBox<>(new String[]{"All", "Fantasy", "Romance", "Sci-Fi", "Mystery", "Horror", "Drama"});
+        genreBox.setFont(new Font("Arial", Font.PLAIN, 14));
+        genreBox.setPreferredSize(new Dimension(120, 35));
 genreBox.setBorder(BorderFactory.createLineBorder(new Color(110, 60, 16)));
         genreBox.setForeground(new Color(110, 60, 16));
+genreBox.setBackground(new Color(255, 245, 230));
+genreBox.setFocusable(false); // Simple solution
+
         
         // Sort by (label + dropdown)
         JLabel sortLabel = new JLabel("Sort by:");
-        sortLabel.setFont(new Font("Arial", Font.PLAIN, 20));
-        sortLabel.setForeground(new Color(110, 60, 16)); // Dark brown text
+        sortLabel.setFont(new Font("Arial", Font.BOLD, 20));
+        sortLabel.setForeground(new Color(152, 77, 35)); // Dark brown text
+      
         
-        sortBox = new JComboBox<>(new String[]{"Title", "Price: Low to High", "Price: High to Low", "Author", "Rating"});
-        sortBox.setFont(new Font("Arial", Font.PLAIN, 14));
-        sortBox.setPreferredSize(new Dimension(150, 40));
-        sortBox.setForeground(new Color(110, 60, 16));
-        
+ // ComboBox
+sortBox = new JComboBox<>(new String[]{"Title", "Price: Low to High", "Price: High to Low", "Author", "Rating"});
+sortBox.setFont(new Font("Arial", Font.PLAIN, 14));
+sortBox.setPreferredSize(new Dimension(150, 35));
+sortBox.setForeground(new Color(152, 77, 35));
+sortBox.setBackground(new Color(255, 245, 230));
+
+// Remove focus border
+sortBox.setFocusable(false); // Simple solution
+
+
         // Clear Filters button
         clearFiltersBtn = new JButton("Clear Filters");
 clearFiltersBtn.setFont(new Font("Arial", Font.PLAIN, 16));
-clearFiltersBtn.setBackground(new Color(255, 229, 204));
-// clearFiltersBtn.setForeground(new Color(110, 60, 16)); // Dark brown text
-clearFiltersBtn.setBorder(BorderFactory.createLineBorder(new Color(110, 60, 16)));
+clearFiltersBtn.setBackground(new Color(254, 242, 198));
+ clearFiltersBtn.setForeground(new Color(152, 77, 35)); // Dark brown text
+clearFiltersBtn.setBorder(BorderFactory.createLineBorder(new Color(253, 229, 193),2));
 clearFiltersBtn.setFocusPainted(false);
 
 // ========== ADD SIZE SETTINGS ==========
@@ -235,8 +245,8 @@ protected void paintComponent(Graphics g) {
     int h = getHeight();
 
     // EXACTLY YOUR 2 COLORS:
-    Color c1 = new Color(255, 240, 240); // Light pink on LEFT
-    Color c2 = new Color(235, 235, 255); // Light blue on RIGHT
+    Color c1 = new Color(249, 231, 247); // Light pink on LEFT
+    Color c2 = new Color(231, 230, 254); // Light blue on RIGHT
     
     // HORIZONTAL gradient from left to right
     GradientPaint gp = new GradientPaint(0, 0, c1, w, 0, c2);

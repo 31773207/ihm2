@@ -20,7 +20,7 @@ public class FeaturedPanel extends JPanel {
         // ================= TITLE ==================
         JLabel mainTitle = new JLabel("✨ Featured Books ✨", SwingConstants.CENTER);
         mainTitle.setFont(new Font("Serif", Font.BOLD, 40));
-        mainTitle.setForeground(new Color(110, 60, 16));
+        mainTitle.setForeground(new Color(152, 77, 35));
         mainTitle.setAlignmentX(Component.CENTER_ALIGNMENT);
         mainTitle.setBorder(BorderFactory.createEmptyBorder(20, 0, 10, 0));
         add(mainTitle);
@@ -28,7 +28,7 @@ public class FeaturedPanel extends JPanel {
         // ================= SUBTITLE ==================
         JLabel subtitle = new JLabel("Handpicked selection from our curators");
         subtitle.setFont(new Font("SansSerif", Font.PLAIN, 20));
-        subtitle.setForeground(new Color(110, 60, 16));
+        subtitle.setForeground(new Color(152, 77, 35));
         subtitle.setAlignmentX(Component.CENTER_ALIGNMENT);
         subtitle.setBorder(BorderFactory.createEmptyBorder(0, 0, 30, 0));
         add(subtitle);
@@ -56,8 +56,8 @@ public class FeaturedPanel extends JPanel {
         int h = getHeight();
 
         // COLORS FROM YOUR IMAGE:
-        Color leftColor = new Color(224, 216, 230);  // Warm beige/cream (left)
-        Color rightColor = new Color(211, 206, 229); // Light pink/peach (right)
+        Color leftColor = new Color(240,215,221);  // Warm beige/cream (left)
+        Color rightColor = new Color(223, 224, 255); // Light pink/peach (right)
         
         // HORIZONTAL gradient from left to right
         GradientPaint gp = new GradientPaint(0, 0, leftColor, w, 0, rightColor);

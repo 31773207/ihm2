@@ -437,7 +437,7 @@ public class CheckoutPanel extends JPanel {
 
         // CANCEL BUTTON - Fixed size
         cancelBtn = new JButton("Cancel");
-        cancelBtn.setFont(new Font("Arial", Font.BOLD, 14));
+        cancelBtn.setFont(new Font("Arial", Font.BOLD, 16));
         cancelBtn.setBackground(new Color(240, 240, 240));
         cancelBtn.setForeground(new Color(80, 80, 80));
         cancelBtn.setBorder(BorderFactory.createCompoundBorder(
@@ -480,7 +480,7 @@ public class CheckoutPanel extends JPanel {
 
         // SUBMIT BUTTON - Fixed size
         submitBtn = new JButton("Confirm Order");
-        submitBtn.setFont(new Font("Arial", Font.BOLD, 14));
+        submitBtn.setFont(new Font("Arial", Font.BOLD, 16));
         submitBtn.setBackground(new Color(110, 60, 16));
         submitBtn.setForeground(Color.WHITE);
         submitBtn.setBorder(BorderFactory.createEmptyBorder(10, 30, 10, 30));

@@ -16,8 +16,8 @@ public class AuthorsPanel extends JPanel {
 
         // ===== TITLE =====
         JLabel mainTitle = new JLabel("Featured Authors", SwingConstants.CENTER);
-        mainTitle.setFont(new Font("Georgia", Font.BOLD, 36));
-        mainTitle.setForeground(new Color(30, 20, 10));
+        mainTitle.setFont(new Font("Georgia", Font.BOLD, 40));
+        mainTitle.setForeground(new Color(152, 77, 35));
         mainTitle.setAlignmentX(CENTER_ALIGNMENT);
         mainTitle.setBorder(BorderFactory.createEmptyBorder(50, 0, 15, 0));
         add(mainTitle);
@@ -25,7 +25,7 @@ public class AuthorsPanel extends JPanel {
         // ===== SUBTITLE =====
         JLabel subtitle = new JLabel("Meet the brilliant minds behind the stories that have captivated readers worldwide.", SwingConstants.CENTER);
         subtitle.setFont(new Font("Georgia", Font.PLAIN, 18));
-        subtitle.setForeground(new Color(80, 70, 60));
+        subtitle.setForeground(new Color(152, 77, 35));
         subtitle.setAlignmentX(CENTER_ALIGNMENT);
         subtitle.setBorder(BorderFactory.createEmptyBorder(0, 0, 50, 0));
         add(subtitle);
@@ -67,11 +67,11 @@ public class AuthorsPanel extends JPanel {
         
         JButton viewAllButton = new JButton("View All Authors");
         viewAllButton.setFont(new Font("Georgia", Font.BOLD, 18));
-        viewAllButton.setBackground(new Color(40, 30, 20));
+        viewAllButton.setBackground(new Color(152, 77, 35));
         viewAllButton.setForeground(Color.WHITE);
         viewAllButton.setFocusPainted(false);
         viewAllButton.setBorder(BorderFactory.createCompoundBorder(
-            BorderFactory.createLineBorder(new Color(30, 20, 10), 1),
+            BorderFactory.createLineBorder(new Color(152, 77, 35), 1),
             BorderFactory.createEmptyBorder(12, 40, 12, 40)
         ));
         viewAllButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
@@ -85,7 +85,7 @@ public class AuthorsPanel extends JPanel {
             
             @Override
             public void mouseExited(java.awt.event.MouseEvent evt) {
-                viewAllButton.setBackground(new Color(40, 30, 20));
+                viewAllButton.setBackground(new Color(152, 77, 35));
             }
         });
         
@@ -103,7 +103,7 @@ public class AuthorsPanel extends JPanel {
         int h = getHeight();
 
         // soft vertical gradient background
-        GradientPaint gp = new GradientPaint(0, 0, new Color(250, 240, 245), 0, h, new Color(235, 235, 255));
+        GradientPaint gp = new GradientPaint(0, 0, new Color(235, 216, 228), 0, h, new Color(210, 199, 225));
         g2.setPaint(gp);
         g2.fillRect(0, 0, w, h);
 

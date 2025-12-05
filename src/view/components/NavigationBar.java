@@ -11,8 +11,10 @@ public class NavigationBar extends JPanel {
 
     public NavigationBar() {
         // EXACT COLOR from your screenshot - Solid light warm brown/beige
-        setBackground(new Color(240, 230, 220)); // EXACT solid color
-        
+        setBackground(new Color(240, 217, 221)); // EXACT solid color
+ 
+
+
         setPreferredSize(new Dimension(1200, 60));
         setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
@@ -21,13 +23,42 @@ public class NavigationBar extends JPanel {
         gbc.insets = new Insets(0, 5, 0, 5);
 
         // --- Logo ---
-        JLabel logo = new JLabel("📚 Bookify");
+      /*   JLabel logo = new JLabel("📚 Bookify");
         logo.setFont(new Font("Arial", Font.BOLD, 26));
-        logo.setForeground(new Color(80, 60, 40)); // Dark brown text
+        logo.setForeground(new Color(146, 46, 14)); // Dark brown text
         gbc.gridx = 0;
         gbc.anchor = GridBagConstraints.WEST;
         gbc.weightx = 0;
         add(logo, gbc);
+*/
+
+
+// Load logo image from resources
+// Create panel for logo + text
+JPanel logoPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 0));
+logoPanel.setOpaque(false); // Transparent background
+
+// Logo image
+ImageIcon logoIcon = new ImageIcon("resources/icons/logo.png");
+Image logoImage = logoIcon.getImage().getScaledInstance(40, 40, Image.SCALE_SMOOTH);
+JLabel logoImg = new JLabel(new ImageIcon(logoImage));
+
+// Text "Bookify" next to logo
+JLabel logoText = new JLabel("Bookify");
+logoText.setFont(new Font("Arial", Font.BOLD, 26));
+logoText.setForeground(new Color(146, 46, 14));
+
+// Add both to panel
+logoPanel.add(logoImg);
+logoPanel.add(logoText);
+
+// Add panel to layout
+gbc.gridx = 0;
+gbc.anchor = GridBagConstraints.WEST;
+gbc.weightx = 0;
+add(logoPanel, gbc);
+
+
 
         // --- Left spacer to push menu to center ---
         JPanel leftSpacer = new JPanel();
@@ -49,6 +80,7 @@ public class NavigationBar extends JPanel {
         centerPanel.setOpaque(false);
         for (JButton btn : mainBtns) styleButton(btn);
         for (JButton btn : mainBtns) centerPanel.add(btn);
+        for (JButton btn : mainBtns) btn.setForeground(new Color(146, 46, 14)); // Dark brown text
 
         gbc.gridx = 2;
         gbc.weightx = 0;
@@ -65,7 +97,7 @@ public class NavigationBar extends JPanel {
 
         // --- Right buttons: search, cart, login ---
         // Search field
-        searchField = new JTextField(12);
+        /*searchField = new JTextField(12);
         searchField.setFont(new Font("Arial", Font.PLAIN, 14));
         searchField.setBorder(BorderFactory.createCompoundBorder(
             BorderFactory.createLineBorder(new Color(180, 150, 120), 2),
@@ -74,6 +106,22 @@ public class NavigationBar extends JPanel {
         searchField.setBackground(new Color(255, 250, 245)); // Light cream
         searchField.setForeground(new Color(80, 70, 60));
         searchField.setCaretColor(new Color(80, 70, 60));
+searchField.setBorder(new RoundedBorder(35, new Color(80, 60, 40), 2));*/
+searchField = new JTextField(15);
+searchField.setFont(new Font("Arial", Font.PLAIN, 12));
+searchField.setBackground(new Color(255, 250, 245));
+searchField.setForeground(new Color(80, 70, 60));
+searchField.setCaretColor(new Color(80, 60, 40));
+searchField.setOpaque(false); // Make transparent
+
+searchField.setBorder(BorderFactory.createCompoundBorder(
+    new RoundedBorder(35, new Color(80, 60, 40), 1),
+    BorderFactory.createEmptyBorder(0, 10, 0, 10) // Increased padding
+));
+
+// Set size
+searchField.setPreferredSize(new Dimension(300, 35)); // Wider
+searchField.setMaximumSize(new Dimension(300, 35));
 
         // Search button
         searchBtn = new JButton("🔍");
@@ -92,14 +140,47 @@ public class NavigationBar extends JPanel {
         cartBtn.setForeground(new Color(80, 70, 60));
 
         // Login button
-        loginBtn = new JButton("Login");
+        /*loginBtn = new JButton("Login");
         loginBtn.setContentAreaFilled(true);
         loginBtn.setBackground(new Color(200, 180, 160)); // Medium beige
         loginBtn.setBorderPainted(false);
         loginBtn.setFocusPainted(false);
         loginBtn.setFont(new Font("SansSerif", Font.BOLD, 18));
         loginBtn.setForeground(new Color(80, 60, 40));
-        loginBtn.setBorder(BorderFactory.createEmptyBorder(8, 20, 8, 20));
+        loginBtn.setBorder(BorderFactory.createEmptyBorder(8, 20, 8, 20));*/
+
+loginBtn = new JButton("Login") {
+    @Override
+    protected void paintComponent(Graphics g) {
+        Graphics2D g2 = (Graphics2D) g.create();
+        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        
+        // Fill rounded background
+        g2.setColor(getBackground());
+        g2.fillRoundRect(0, 0, getWidth(), getHeight(), 35, 35);
+        
+        // Paint text
+        super.paintComponent(g2);
+        g2.dispose();
+    }
+    
+    @Override
+    public void paintBorder(Graphics g) {
+        // Border is handled by RoundedBorder
+        super.paintBorder(g);
+    }
+};
+
+loginBtn.setContentAreaFilled(false); // IMPORTANT: Set to false
+loginBtn.setBackground(new Color(222, 211, 218));
+loginBtn.setBorderPainted(true);
+loginBtn.setFocusPainted(false);
+loginBtn.setFont(new Font("SansSerif", Font.BOLD, 16));
+loginBtn.setForeground(new Color(146, 46, 14));
+loginBtn.setBorder(new RoundedBorder(35, new Color(228, 214, 207), 2));
+loginBtn.setPreferredSize(new Dimension(100, 35));
+loginBtn.setMaximumSize(new Dimension(100, 35));
+
 
         JPanel rightPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 10, 0));
         rightPanel.setOpaque(false);
@@ -176,4 +257,29 @@ public class NavigationBar extends JPanel {
         g.dispose();
         return new ImageIcon(img);
     }
+
+
+
+
+     @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        Graphics2D g2 = (Graphics2D) g.create();
+        int w = getWidth();
+        int h = getHeight();
+
+        // Use your exact colors from the image:
+        Color leftColor = new Color(240, 217, 221);  // Pink/peach
+        Color rightColor = new Color(224, 214, 231); // Light lavender
+        
+        // Horizontal gradient from left to right
+        GradientPaint gp = new GradientPaint(0, 0, leftColor, w, 0, rightColor);
+
+        g2.setPaint(gp);
+        g2.fillRect(0, 0, w, h);
+
+        g2.dispose();
+    }
 }
+
+

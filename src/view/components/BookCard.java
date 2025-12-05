@@ -363,52 +363,81 @@ package view.components;
 
 import controller.CartController;
 import java.awt.*;
+import java.awt.geom.RoundRectangle2D;
 import javax.swing.*;
 import model.Book;
-
 public class BookCard extends JPanel {
 
     public BookCard(Book book) {
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         // ========== IMPORTANT: Set to transparent so gradient shows ==========
         setOpaque(false); // Changed from true to false
-        setBorder(BorderFactory.createCompoundBorder(
+        /*setBorder(BorderFactory.createCompoundBorder(
             BorderFactory.createLineBorder(new Color(230, 230, 230), 1),
             BorderFactory.createEmptyBorder(12, 12, 12, 12)
-        ));
-        setPreferredSize(new Dimension(300, 620));
-        setMaximumSize(new Dimension(300, 620));
+        ));*/
+setBorder(new RoundedBorder(25, new Color(230, 230, 230), 2));
+
+        setPreferredSize(new Dimension(300, 600));
+        setMaximumSize(new Dimension(300, 600));
 
         // ======================== LARGER BOOK COVER IMAGE ===================================
-        JLabel bookImage = new JLabel();
-        bookImage.setAlignmentX(Component.CENTER_ALIGNMENT);
-        bookImage.setBorder(BorderFactory.createLineBorder(new Color(220, 220, 220), 1));
-        bookImage.setBackground(new Color(245, 245, 245));
-        bookImage.setOpaque(true);
-        bookImage.setHorizontalAlignment(SwingConstants.CENTER);
-        bookImage.setVerticalAlignment(SwingConstants.CENTER);
-
-        // Load image from resources
-        try {
-            java.net.URL imgURL = getClass().getResource(book.getImagePath());
-            if (imgURL != null) {
-                ImageIcon icon = new ImageIcon(imgURL);
-                // FIXED: Use full card width (300 - 12*2 = 276)
-                Image img = icon.getImage().getScaledInstance(360, 360, Image.SCALE_SMOOTH);
-                bookImage.setIcon(new ImageIcon(img));
-                bookImage.setText("");
-            } else {
-                bookImage.setText("<html><div style='text-align:center;color:#999;font-size:14px;padding:40px'>"
-                    + "BOOK COVER<br/><br/>" + book.getTitle() + "</div></html>");
-            }
-        } catch (Exception e) {
-            bookImage.setText("<html><div style='text-align:center;color:#999;font-size:14px;padding:40px'>"
-                + "IMAGE<br/>NOT FOUND</div></html>");
-        }
+       JLabel bookImage = new JLabel() {
+    @Override
+    protected void paintComponent(Graphics g) {
+        // Create a rounded clip
+        Graphics2D g2 = (Graphics2D) g.create();
+        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         
-        bookImage.setPreferredSize(new Dimension(260, 320));
-        bookImage.setMaximumSize(new Dimension(260, 320));
-        bookImage.setMinimumSize(new Dimension(260, 320));
+        int width = getWidth();
+        int height = getHeight();
+        int arc = 25; // Match your border radius
+        
+        // Set rounded clipping area
+        Shape clip = new RoundRectangle2D.Double(0, 0, width, height, arc, arc);
+        g2.setClip(clip);
+        
+        // Let JLabel paint normally (icon/text) within the clip
+        super.paintComponent(g2);
+        
+        g2.dispose();
+    }
+    
+    @Override
+    protected void paintBorder(Graphics g) {
+        // Paint the rounded border
+        super.paintBorder(g);
+    }
+};
+
+bookImage.setAlignmentX(Component.CENTER_ALIGNMENT);
+bookImage.setBackground(new Color(245, 245, 245));
+bookImage.setOpaque(true);
+bookImage.setHorizontalAlignment(SwingConstants.CENTER);
+bookImage.setVerticalAlignment(SwingConstants.CENTER);
+bookImage.setBorder(new RoundedBorder(25, new Color(253, 229, 193), 2));
+
+// Load image from resources
+try {
+    java.net.URL imgURL = getClass().getResource(book.getImagePath());
+    if (imgURL != null) {
+        ImageIcon icon = new ImageIcon(imgURL);
+        // Scale to fit the rounded area (slightly smaller to account for border)
+        Image img = icon.getImage().getScaledInstance(256, 316, Image.SCALE_SMOOTH); // 260-4, 320-4
+        bookImage.setIcon(new ImageIcon(img));
+        bookImage.setText("");
+    } else {
+        bookImage.setText("<html><div style='text-align:center;color:#999;font-size:14px;padding:40px'>"
+            + "BOOK COVER<br/><br/>" + book.getTitle() + "</div></html>");
+    }
+} catch (Exception e) {
+    bookImage.setText("<html><div style='text-align:center;color:#999;font-size:14px;padding:40px'>"
+        + "IMAGE<br/>NOT FOUND</div></html>");
+}
+
+bookImage.setPreferredSize(new Dimension(260, 320));
+bookImage.setMaximumSize(new Dimension(260, 320));
+bookImage.setMinimumSize(new Dimension(260, 320));
 
         // ======================== WISHLIST HEART OVERLAY ===================================
         JLayeredPane imageLayer = new JLayeredPane();
@@ -442,15 +471,15 @@ public class BookCard extends JPanel {
 
         // ======================== TITLE ===================================
         String cleanTitle = book.getTitle().replaceAll("<[^>]*>", "");
-        JLabel bookTitle = new JLabel("<html><div style='text-align:center;width:260px;font-weight:bold;font-size:16px;color:#6E3C10;margin-top:10px'>" + 
+        JLabel bookTitle = new JLabel("<html><div style='text-align:left;width:260px;font-weight:bold;font-size:14px;color:#6E3C10;margin-top:10px'>" + 
                                       cleanTitle + "</div></html>");
         bookTitle.setForeground(new Color(110, 60, 16));
         bookTitle.setAlignmentX(Component.CENTER_ALIGNMENT);
-        bookTitle.setBorder(BorderFactory.createEmptyBorder(10, 0, 6, 0));
+        bookTitle.setBorder(BorderFactory.createEmptyBorder(5, 0, 6, 0));
 
         // ===================== AUTHOR ===================
         String cleanAuthor = book.getAuthor().replaceAll("<[^>]*>", "");
-        JLabel author = new JLabel("<html><div style='text-align:left;width:260px;font-size:13px;color:#6E3C10;font-style:italic;'>" + 
+        JLabel author = new JLabel("<html><div style='text-align:left;width:260px;font-size:10px;color:#6E3C10;font-style:italic;'>" + 
                                    cleanAuthor + "</div></html>");
         author.setAlignmentX(Component.CENTER_ALIGNMENT);
         author.setBorder(BorderFactory.createEmptyBorder(0, 0, 8, 0));
@@ -460,10 +489,10 @@ public class BookCard extends JPanel {
         if (cleanDesc.length() > 60) {
             cleanDesc = cleanDesc.substring(0, 60) + "...";
         }
-        JLabel description = new JLabel("<html><div style='text-align:center;width:260px;color:#FEEFC6;font-size:12px;line-height:1.3;'>" + 
+        JLabel description = new JLabel("<html><div style='text-align:left;width:260px;color:#C87832;font-size:10px;line-height:1.3;'>" + 
                                        cleanDesc + "</div></html>");
         description.setAlignmentX(Component.CENTER_ALIGNMENT);
-        description.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0));
+        description.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0)); 
 
         // ==================== PRICE AND RATING ROW ======================
         JPanel priceRatingRow = new JPanel();
@@ -476,7 +505,7 @@ public class BookCard extends JPanel {
 
         // ========= LEFT: Price =========
         JLabel price = new JLabel( String.format("%.2f DZD", book.getPrice()));
-        price.setFont(new Font("Arial", Font.BOLD, 17));
+        price.setFont(new Font("Arial", Font.BOLD, 20));
         price.setForeground(new Color(152, 80, 32));
         price.setAlignmentX(Component.LEFT_ALIGNMENT);
 
@@ -489,7 +518,7 @@ public class BookCard extends JPanel {
         
         // Create star rating
         for (int i = 0; i < 5; i++) {
-            JLabel star = new JLabel("★");
+JLabel star = new JLabel("<html><font color='#FFD700'>★</font></html>");
             star.setFont(new Font("Arial", Font.PLAIN, 15));
             if (i < Math.floor(rating)) {
                 star.setForeground(Color.BLACK);
@@ -510,14 +539,20 @@ public class BookCard extends JPanel {
         priceRatingRow.add(Box.createHorizontalGlue());
         priceRatingRow.add(ratingPanel);
 
+
+
+    
+
+
         // =========================== BUTTON =============================
         JButton addToCart = new JButton("Add to Cart");
         addToCart.setAlignmentX(Component.CENTER_ALIGNMENT);
         addToCart.setFont(new Font("Arial", Font.BOLD, 14));
-        addToCart.setBackground(new Color(110, 60, 16));
+        addToCart.setBackground(new Color(140, 63, 13));
         addToCart.setForeground(Color.WHITE);
         addToCart.setFocusPainted(false);
         addToCart.setBorder(BorderFactory.createEmptyBorder(10, 25, 10, 25));
+        
         addToCart.setCursor(new Cursor(Cursor.HAND_CURSOR));
         
         addToCart.setPreferredSize(new Dimension(250, 40));
@@ -543,7 +578,7 @@ public class BookCard extends JPanel {
         add(Box.createVerticalGlue());
     }
 
-   @Override
+  /*  @Override
 protected void paintComponent(Graphics g) {
     super.paintComponent(g);
     Graphics2D g2 = (Graphics2D) g.create();
@@ -570,7 +605,31 @@ Color colorBottom = new Color(249, 211, 153); // F9D399
     
     g2.dispose();
 
-    }
+    } */
+@Override
+protected void paintComponent(Graphics g) {
+    super.paintComponent(g);
+    
+    int w = getWidth();
+    int h = getHeight();
+    int arc = 50; // Match your RoundedBorder(50, ...)
+    
+    Graphics2D g2 = (Graphics2D) g.create();
+    g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+    // JUST the gradient background - NO shadow
+    //GradientPaint gp = new GradientPaint(0, 0, new Color(255, 245, 230), 0, h, new Color(253, 229, 193));
+    GradientPaint gp = new GradientPaint(0, 0, new Color(254, 235, 211), 0, h, new Color(254, 218, 177));
+    g2.setPaint(gp);
+    g2.fillRoundRect(0, 0, w, h, arc, arc);
+
+    // ADD THIS LINE FOR SMALL SHADOW:
+    g2.setColor(new Color(0, 0, 0, 5));
+    g2.drawRoundRect(1, 1, w - 2, h - 2, arc, arc);
+
+    g2.dispose();
+}
+
 
     /**
      * Set a click listener for the bookmark/free button

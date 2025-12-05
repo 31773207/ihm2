@@ -10,7 +10,7 @@ public class FooterPanel extends JPanel {
     public FooterPanel() {
         setOpaque(false);
         setLayout(new BorderLayout());
-        setPreferredSize(new Dimension(900, 320));
+        setPreferredSize(new Dimension(900, 400));
 
         // Top: Newsletter section
         JPanel newsletter = new JPanel();
@@ -76,32 +76,56 @@ public class FooterPanel extends JPanel {
         JPanel left = new JPanel();
         left.setOpaque(false);
         left.setLayout(new BoxLayout(left, BoxLayout.Y_AXIS));
-        JLabel brand = new JLabel("Bookify");
+        /*JLabel brand = new JLabel("Bookify");
         brand.setFont(new Font("SansSerif", Font.BOLD, 20));
-        brand.setForeground(new Color(83, 33, 33));
-        JLabel desc = new JLabel("Your premier destination to discover, explore and savor the finest literary works.");
-        desc.setForeground(new Color(120, 70, 70));
-        desc.setFont(new Font("SansSerif", Font.PLAIN, 13));
-        desc.setBorder(BorderFactory.createEmptyBorder(8,0,8,0));
-        JPanel socials = new JPanel(new FlowLayout(FlowLayout.LEFT, 8, 0));
-        socials.setOpaque(false);
-        JButton t = makeSocialButton("@", new Color(255,240,230));
-        JButton tw = makeSocialButton("T", new Color(255,240,230));
-        JButton w = makeSocialButton("W", new Color(255,240,230));
-        socials.add(t); socials.add(tw); socials.add(w);
-        left.add(brand);
-        left.add(desc);
-        left.add(socials);
+        brand.setForeground(new Color(83, 33, 33));*/
+
+        JPanel logoNamePanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 0));
+logoNamePanel.setOpaque(false);
+// Logo image
+ImageIcon logoIcon = new ImageIcon("resources/icons/logo.png");
+Image logoImage = logoIcon.getImage().getScaledInstance(40, 40, Image.SCALE_SMOOTH);
+JLabel logoImg = new JLabel(new ImageIcon(logoImage));
+
+// Text "Bookify" next to logo
+JLabel logoText = new JLabel("Bookify");
+logoText.setFont(new Font("Arial", Font.BOLD, 26));
+logoText.setForeground(new Color(146, 46, 14));
+
+// Add logo and text to same panel
+logoNamePanel.add(logoImg);
+logoNamePanel.add(logoText);
+// Create a text area instead (it handles wrapping better)
+JTextArea desc = new JTextArea("Your premier destination to discover, explore and savor the finest literary works. Cultivate your passion for reading with our exceptional collection of timeless and contemporary masterpieces.");
+desc.setForeground(new Color(146, 46, 14));
+desc.setFont(new Font("SansSerif", Font.PLAIN, 13));
+desc.setBackground(null); // Transparent
+desc.setEditable(false);
+desc.setLineWrap(true);
+desc.setWrapStyleWord(true);
+desc.setBorder(BorderFactory.createEmptyBorder(4,0,8,0));
+desc.setMaximumSize(new Dimension(300, 80)); // Fixed size
+desc.setOpaque(false);
+
+JPanel socials = new JPanel(new FlowLayout(FlowLayout.LEFT, 8, 0));
+socials.setOpaque(false);
+JButton t = makeSocialButton("@", new Color(255,240,230));
+JButton tw = makeSocialButton("T", new Color(255,240,230));
+JButton w = makeSocialButton("W", new Color(255,240,230));
+socials.add(t); socials.add(tw); socials.add(w);
+left.add(logoNamePanel);
+left.add(desc);
+left.add(socials);
 
         // Center column: Navigation
         JPanel center = new JPanel();
         center.setOpaque(false);
         center.setLayout(new BoxLayout(center, BoxLayout.Y_AXIS));
         JLabel navTitle = new JLabel("Navigation");
-        navTitle.setFont(new Font("SansSerif", Font.BOLD, 16));
-        navTitle.setForeground(new Color(83, 33, 33));
-        JLabel links = new JLabel("Home   |   Catalogue   |   Genres   |   Authors   |   Featured");
-        links.setForeground(new Color(120, 70, 70));
+        navTitle.setFont(new Font("SansSerif", Font.BOLD, 26));
+        navTitle.setForeground(new Color(146, 46, 14));
+        JLabel links = new JLabel("<html>Home   <br>   Catalogue   <br>   Genres   <br>   Authors  <br>   Featured</html>");
+        links.setForeground(new Color(146, 46, 14));
         links.setFont(new Font("SansSerif", Font.PLAIN, 13));
         center.add(navTitle);
         center.add(Box.createRigidArea(new Dimension(0,8)));
@@ -112,13 +136,13 @@ public class FooterPanel extends JPanel {
         right.setOpaque(false);
         right.setLayout(new BoxLayout(right, BoxLayout.Y_AXIS));
         JLabel contactTitle = new JLabel("Contact");
-        contactTitle.setFont(new Font("SansSerif", Font.BOLD, 16));
-        contactTitle.setForeground(new Color(83, 33, 33));
+        contactTitle.setFont(new Font("SansSerif", Font.BOLD, 26));
+        contactTitle.setForeground(new Color(146, 46, 14));
         JLabel contactInfo = new JLabel("Email: hello@bookify.com");
-        contactInfo.setForeground(new Color(120, 70, 70));
+        contactInfo.setForeground(new Color(146, 46, 14));
         contactInfo.setFont(new Font("SansSerif", Font.PLAIN, 13));
         JLabel phone = new JLabel("Phone: +1 (555) 123-4567");
-        phone.setForeground(new Color(120, 70, 70));
+        phone.setForeground(new Color(146, 46, 14));
         phone.setFont(new Font("SansSerif", Font.PLAIN, 13));
         right.add(contactTitle);
         right.add(Box.createRigidArea(new Dimension(0,8)));
@@ -126,8 +150,10 @@ public class FooterPanel extends JPanel {
         right.add(phone);
 
         columns.add(left);
-        columns.add(center);
-        columns.add(right);
+columns.add(Box.createHorizontalStrut(20)); // 20px space
+columns.add(center);
+columns.add(Box.createHorizontalStrut(20)); // Another 20px space  
+columns.add(right);
 
         // Bottom legal line
         JLabel legal = new JLabel("Cultivating the love of reading together   |   © 2025 Bookify - All rights reserved.", SwingConstants.CENTER);

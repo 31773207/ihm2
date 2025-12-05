@@ -3,7 +3,6 @@ package view.panels;
 import java.awt.*;
 import javax.swing.*;
 import view.frames.MainFrame;
-
 public class HomePanel extends JPanel {
 
     public HomePanel(MainFrame mainFrame) {
@@ -41,7 +40,7 @@ public class HomePanel extends JPanel {
 
         JButton startReading = new JButton("Start Reading");
         startReading.setFont(new Font("SansSerif", Font.BOLD, 20));
-        startReading.setBackground(new Color(110, 60, 16));
+        startReading.setBackground(new Color(137, 61, 14));
         startReading.setForeground(Color.WHITE);
         startReading.setFocusPainted(false);
         startReading.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
@@ -53,11 +52,11 @@ public class HomePanel extends JPanel {
 
         JButton freeClassics = new JButton("Free Classics");
         freeClassics.setFont(new Font("SansSerif", Font.BOLD, 20));
-        freeClassics.setBackground(new Color(198, 175, 158));
+        freeClassics.setBackground(new Color(234, 215, 228));
         freeClassics.setForeground(new Color(110, 60, 16));
         freeClassics.setFocusPainted(false);
         freeClassics.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createLineBorder(new Color(198, 175, 158), 1),
+                BorderFactory.createLineBorder(new Color(219, 192, 195), 1),
                 BorderFactory.createEmptyBorder(8, 18, 8, 18)
         ));
 
@@ -101,7 +100,9 @@ public class HomePanel extends JPanel {
         // ensure label is non-opaque (so it doesn't paint its own background)
         label.setOpaque(false);
 
-        rightPanel.add(label, BorderLayout.CENTER);
+        //rightPanel.add(label, BorderLayout.CENTER);
+
+                rightPanel.add(label, BorderLayout.CENTER);
 
         // Add panels to main layout (HomePanel)
         add(leftPanel);
@@ -142,8 +143,8 @@ public class HomePanel extends JPanel {
         int h = getHeight();
 
         // EXACTLY YOUR 2 COLORS:
-        Color c1 = new Color(255, 230, 230); // Light pink
-        Color c2 = new Color(240, 240, 255); // Light blue
+        Color c1 = new Color(250, 231, 245); // Light pink
+        Color c2 = new Color(221, 217, 253); // Light blue
         GradientPaint gp = new GradientPaint(0, 0, c1, 0, h, c2);
 
         g2.setPaint(gp);
